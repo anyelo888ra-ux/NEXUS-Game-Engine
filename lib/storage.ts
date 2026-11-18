@@ -1,9 +1,17 @@
+export type EngineObject = {
+  id: string;
+  name: string;
+  type: "camera" | "light" | "mesh" | "sprite";
+  asset?: Blob;
+  format?: "glb" | "gltf" | "obj";
+};
+
 export type EngineProject = {
   id: string;
   name: string;
   createdAt: number;
   updatedAt: number;
-  scene: { objects: Array<{ id: string; name: string; type: "camera" | "light" | "mesh" | "sprite" }> };
+  scene: { objects: EngineObject[] };
 };
 
 const DB_NAME = "nexus-game-engine";
@@ -32,8 +40,11 @@ export async function listProjects(): Promise<EngineProject[]> {
   const db = await openDatabase();
   return new Promise((resolve, reject) => {
     const request = db.transaction(STORE, "readonly").objectStore(STORE).getAll();
-    request.onerror = () => reject(request.error);
-    request.onsuccess = () => { resolve((request.result as EngineProject[]).sort((a,b) => b.updatedAt-a.updatedAt)); db.close(); };
+    request.onerror = () => { db.close(); reject(request.error); };
+    request.onsuccess = () => {
+      resolve((request.result as EngineProject[]).sort((a, b) => b.updatedAt - a.updatedAt));
+      db.close();
+    };
   });
 }
 
@@ -64,5 +75,6 @@ export async function deleteProject(id: string): Promise<void> {
     tx.objectStore(STORE).delete(id);
     tx.oncomplete = () => { db.close(); resolve(); };
     tx.onerror = () => { db.close(); reject(tx.error); };
+    tx.onabort = () => { db.close(); reject(tx.error); };
   });
 }
