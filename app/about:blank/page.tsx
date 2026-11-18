@@ -1,2 +1,21 @@
 import Link from "next/link";
-export default function BlankPage(){return <main style={{minHeight:"100vh",background:"#fff",color:"#111",padding:20,fontFamily:"Arial,sans-serif"}}><title>about:blank · NEXUS</title><p style={{fontSize:13}}>NEXUS blank workspace</p><Link href="/" style={{fontSize:12,color:"#555"}}>Return to NEXUS Engine</Link></main>
+
+export default function BlankPage() {
+  return (
+    <main
+      style={{
+        minHeight: "100vh",
+        background: "#fff",
+        color: "#111",
+        padding: 20,
+        fontFamily: "Arial, sans-serif",
+      }}
+    >
+      <title>about:blank · NEXUS</title>
+      <p style={{ fontSize: 13 }}>NEXUS blank workspace</p>
+      <Link href="/" style={{ fontSize: 12, color: "#555" }}>
+        Return to NEXUS Engine
+      </Link>
+    </main>
+  );
+}
