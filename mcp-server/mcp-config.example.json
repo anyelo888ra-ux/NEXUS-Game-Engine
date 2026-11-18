@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "nexus-game-engine": {
+      "command": "node",
+      "args": [
+        "/ABSOLUTE/PATH/TO/NEXUS-Game-Engine/mcp-server/index.mjs"
+      ]
+    }
+  }
+}
