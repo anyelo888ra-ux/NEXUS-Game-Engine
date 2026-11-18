@@ -34,6 +34,7 @@ export default function EditorPage({params}:{params:Promise<{id:string}>}) {
   const [newFileName,setNewFileName]=useState("NewScript.lua");
   const viewportRef=useRef<HTMLDivElement>(null);
   const importRef=useRef<HTMLInputElement>(null);
+  const projectJsonRef=useRef<HTMLInputElement>(null);
 
   useEffect(()=>{let active=true;params.then(({id})=>getProject(id).then(p=>{if(!active)return;if(p){setProject({...p,files:p.files??[],scripts:p.scripts??[],animations:p.animations??[]});setStatus("Project loaded · Local workspace");}else setStatus("Project not found in this browser.");}).catch(()=>{if(active)setStatus("Could not read local project.");}));return()=>{active=false;};},[params]);
   const persist=useCallback(async(next:EngineProject)=>{setProject(next);setStatus("Saving locally…");try{await saveProject({...next,updatedAt:Date.now()});setStatus("Saved locally");}catch{setStatus("Save failed — check browser storage permissions.");}},[]);
@@ -41,6 +42,22 @@ export default function EditorPage({params}:{params:Promise<{id:string}>}) {
   const scripts=project?.scripts??[];
   const activeScript=scripts.find(s=>s.id===selectedScript)??scripts[0]??null;
   const activeFile=(project?.files??[]).find(file=>file.id===selectedFileId)??null;
+
+  function exportProjectJson(){
+    if(!project)return;
+    const exportable={...project,scene:{...project.scene,objects:project.scene.objects.map(({asset,...item})=>item)}};
+    const blob=new Blob([JSON.stringify(exportable,null,2)],{type:"application/json"});
+    const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download=(project.name||"nexus-project").replace(/[^a-z0-9-_]+/gi,"-")+".json";a.click();URL.revokeObjectURL(url);
+    setStatus("Project JSON exported · binary model files are separate");
+  }
+  async function importProjectJson(event:ChangeEvent<HTMLInputElement>){
+    const file=event.target.files?.[0];if(!file)return;
+    try{const parsed=JSON.parse(await file.text()) as EngineProject;if(!parsed||typeof parsed.id!=="string"||!parsed.scene||!Array.isArray(parsed.scene.objects))throw new Error("Invalid NEXUS project JSON");
+      const restored:EngineProject={...parsed,files:parsed.files??[],scripts:parsed.scripts??[],animations:parsed.animations??[],scene:{...parsed.scene,objects:parsed.scene.objects.map(o=>({...o,asset:undefined}))}};
+      await persist(restored);setSelectedId(null);setStatus("Project JSON imported · re-import binary models separately");
+    }catch(error){setStatus(error instanceof Error?"Import failed: "+error.message:"Could not import project JSON");}
+    event.target.value="";
+  }
 
   function addShape(shape:EngineShape){
     if(!project)return;
@@ -80,7 +97,7 @@ export default function EditorPage({params}:{params:Promise<{id:string}>}) {
     const urls:string[]=[];const geometries:THREE.BufferGeometry[]=[];const materials:THREE.Material[]=[];const animated:THREE.Object3D[]=[];
     for(const item of project.scene.objects){if(item.type!=="mesh")continue;
       const transform=item.transform??defaultTransform();
-      if(item.asset&&item.format){const url=URL.createObjectURL(item.asset);urls.push(url);if(item.format==="obj"){item.asset.text().then(t=>{const model=new OBJLoader().parse(t);model.name=item.name;model.position.set(...transform.position);model.rotation.set(...transform.rotation);model.scale.set(...transform.scale);if(item.id===selectedId)model.traverse(child=>{if(child instanceof THREE.Mesh){const m=new THREE.MeshStandardMaterial({color:0x50d8e8});materials.push(m);child.material=m;}});scene.add(model);if(preview&&project.animations?.some(a=>a.targetId===item.id))animated.push(model);});}else new GLTFLoader().load(url,g=>{g.scene.name=item.name;g.scene.position.set(...transform.position);g.scene.rotation.set(...transform.rotation);g.scene.scale.set(...transform.scale);if(item.id===selectedId)g.scene.traverse(child=>{if(child instanceof THREE.Mesh){const m=new THREE.MeshStandardMaterial({color:0x50d8e8});materials.push(m);child.material=m;}});scene.add(g.scene);if(preview&&project.animations?.some(a=>a.targetId===item.id))animated.push(g.scene);},undefined,()=>setStatus("Could not load "+item.name+". Export as GLB from Blender."));continue;}
+      if(item.asset&&item.format){const url=URL.createObjectURL(item.asset);urls.push(url);if(item.format==="obj"){item.asset.text().then(t=>{const model=new OBJLoader().parse(t);model.name=item.name;model.position.set(...transform.position);model.rotation.set(...transform.rotation);model.scale.set(...transform.scale);if(item.id===selectedId)model.traverse(child=>{if(child instanceof THREE.Mesh){const m=new THREE.MeshStandardMaterial({color:item.color??0x50d8e8});materials.push(m);child.material=m;}});scene.add(model);if(preview&&project.animations?.some(a=>a.targetId===item.id))animated.push(model);});}else new GLTFLoader().load(url,g=>{g.scene.name=item.name;g.scene.position.set(...transform.position);g.scene.rotation.set(...transform.rotation);g.scene.scale.set(...transform.scale);if(item.id===selectedId)g.scene.traverse(child=>{if(child instanceof THREE.Mesh){const m=new THREE.MeshStandardMaterial({color:0x50d8e8});materials.push(m);child.material=m;}});scene.add(g.scene);if(preview&&project.animations?.some(a=>a.targetId===item.id))animated.push(g.scene);},undefined,()=>setStatus("Could not load "+item.name+". Export as GLB from Blender."));continue;}
       let geometry:THREE.BufferGeometry;
       switch(item.shape??"cube"){case"sphere":geometry=new THREE.SphereGeometry(.65,32,20);break;case"capsule":geometry=new THREE.CapsuleGeometry(.38,.8,8,16);break;case"plane":geometry=new THREE.PlaneGeometry(2,2);break;case"cone":geometry=new THREE.ConeGeometry(.65,1.3,32);break;case"torus":geometry=new THREE.TorusGeometry(.6,.2,16,48);break;case"circle":geometry=new THREE.CircleGeometry(.75,48);break;default:geometry=new THREE.BoxGeometry(1,1,1);}
       geometries.push(geometry);const material=new THREE.MeshStandardMaterial({color:item.color??(item.id===selectedId?0xffc857:0x50d8e8),metalness:.12,roughness:.55,side:THREE.DoubleSide});materials.push(material);
@@ -98,7 +115,7 @@ export default function EditorPage({params}:{params:Promise<{id:string}>}) {
   if(!project)return <main className="shell" style={{padding:40}}><p>{status}</p><Link href="/" className="btn">Back to projects</Link></main>;
   const panelStyle:CSSProperties={display:"flex",gap:6,flexWrap:"wrap"};
   return <main className="editor-layout">
-    <header className="editorbar"><div className="brand"><div className="logo">N</div><Link href="/">NEXUS ENGINE</Link><span className="muted">/ {project.name}</span><span className="pill">0.3 ALPHA</span></div><div style={{display:"flex",alignItems:"center",gap:8}}><span className="muted mono" style={{fontSize:10}}>{status}</span><button className="btn primary" onClick={()=>{setIsPlaying(v=>!v);setPreview(false);setStatus(isPlaying?"Playtest stopped":"Playtest running · WASD move · Q/E height");}}>{isPlaying?"■ Stop":"▶ Play"}</button><button className="btn" onClick={()=>{setAssistantEnabled(!assistantEnabled);setTab("assistant");}}>✦ Assistant AI</button><Link href="/mcp" className="btn">MCP Hub</Link><Link href="/credits" className="btn">Credits</Link></div></header>
+    <header className="editorbar"><div className="brand"><div className="logo">N</div><Link href="/">NEXUS ENGINE</Link><span className="muted">/ {project.name}</span><span className="pill">0.3 ALPHA</span></div><div style={{display:"flex",alignItems:"center",gap:8}}><span className="muted mono" style={{fontSize:10}}>{status}</span><button className="btn primary" onClick={()=>{setIsPlaying(v=>!v);setPreview(false);setStatus(isPlaying?"Playtest stopped":"Playtest running · WASD move · Q/E height");}}>{isPlaying?"■ Stop":"▶ Play"}</button><button className="btn" onClick={exportProjectJson}>Export JSON</button><button className="btn" onClick={()=>projectJsonRef.current?.click()}>Import JSON</button><input ref={projectJsonRef} type="file" accept=".json,application/json" onChange={e=>void importProjectJson(e)} hidden/><button className="btn" onClick={()=>{setAssistantEnabled(!assistantEnabled);setTab("assistant");}}>✦ Assistant AI</button><Link href="/mcp" className="btn">MCP Hub</Link><Link href="/credits" className="btn">Credits</Link></div></header>
     <section className="editor-workspace editor-v3">
       <aside className="sidepanel">
         <div className="editor-tabs">{(["scene","files","code","animation","assistant"] as const).map(t=><button key={t} className={"tab-btn "+(tab===t?"selected":"")} onClick={()=>setTab(t)}>{({scene:"Scene",files:"Files",code:"Code",animation:"Anim",assistant:"AI"})[t]}</button>)}</div>
