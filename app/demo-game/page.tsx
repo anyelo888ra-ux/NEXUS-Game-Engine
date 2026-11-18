@@ -19,7 +19,6 @@ export default function CrystalRunPage() {
   const [won, setWon] = useState(false);
   const [lost, setLost] = useState(false);
   const [resetKey, setResetKey] = useState(0);
-  const [muted, setMuted] = useState(false);
 
   const restart = useCallback(() => {
     setScore(0);
@@ -65,14 +64,12 @@ export default function CrystalRunPage() {
 
     const platformMaterial = new THREE.MeshStandardMaterial({ color: "#1d4260", metalness: 0.35, roughness: 0.48 });
     const edgeMaterial = new THREE.MeshStandardMaterial({ color: "#28d9ee", emissive: "#087c9a", emissiveIntensity: 0.65 });
-    const platformMeshes: THREE.Mesh[] = [];
     platforms.forEach((p, i) => {
       const mesh = new THREE.Mesh(new THREE.BoxGeometry(p.w, 0.5, p.d), platformMaterial.clone());
       mesh.position.set(p.x, p.y - 0.25, p.z);
       mesh.castShadow = true;
       mesh.receiveShadow = true;
       scene.add(mesh);
-      platformMeshes.push(mesh);
       const rim = new THREE.Mesh(new THREE.BoxGeometry(p.w + 0.08, 0.08, p.d + 0.08), edgeMaterial);
       rim.position.set(p.x, p.y - 0.02, p.z);
       scene.add(rim);
