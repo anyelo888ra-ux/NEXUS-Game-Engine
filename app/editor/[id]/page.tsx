@@ -16,7 +16,7 @@ const starterCode: Record<EngineScript["language"],string> = {
   python: "def on_start():\n    print('Hello from NEXUS!')\n\ndef on_update(delta):\n    pass\n",
   cpp: "#include <iostream>\n\nint main() {\n    std::cout << \"Hello from NEXUS!\" << std::endl;\n    return 0;\n}\n",
   lua: "function on_start()\n    print('Hello from NEXUS!')\nend\n\nfunction on_update(delta)\nend\n",
-  nexus: "// NEXUS Script — experimental language\nwhen game.starts {\n  say \"Hello from NEXUS!\"\n}\n\nwhen player.jumps {\n  say "Jump!"\n  player.move(0, 0.1, 0)\n}\n"
+  nexus: "// NEXUS Script — experimental language\nwhen game.starts {\n  say \"Hello from NEXUS!\"\n}\n\nwhen player.jumps {\n  say \"Jump!\"\n  player.move(0, 0.1, 0)\n}\n"
 };
 
 export default function EditorPage({params}:{params:Promise<{id:string}>}) {
@@ -71,7 +71,7 @@ export default function EditorPage({params}:{params:Promise<{id:string}>}) {
   }
   function setSelectedAsPlayer(){
     if(!project||!selected||selected.shape!=="capsule")return;
-    void persist({...project,scene:{...project.scene,objects:project.scene.objects.map(o=>({...o,role:o.id===selected.id?"player":undefined}))}});
+    void persist({...project,scene:{...project.scene,objects:project.scene.objects.map(o=>({...o,role:o.id===selected.id?"player" as const:undefined}))}});
   }
   function addShape(shape:EngineShape){
     if(!project)return;
