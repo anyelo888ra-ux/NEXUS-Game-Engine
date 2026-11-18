@@ -4,66 +4,49 @@ export default function McpHub() {
   return (
     <main className="docs-layout">
       <Link className="docs-link" href="/">← NEXUS Engine</Link>
-      <div className="eyebrow" style={{ marginTop: 28 }}>
-        NEXUS AI CONNECTIVITY
-      </div>
+      <div className="eyebrow" style={{ marginTop: 28 }}>NEXUS AI CONNECTIVITY · MCP 0.1</div>
       <h1>MCP Hub</h1>
       <p className="subtitle">
-        Un punto central para conectar asistentes de IA con herramientas del
-        editor. MCP permite que un cliente compatible descubra herramientas,
-        pero requiere un servidor MCP real y una conexión autorizada.
+        NEXUS MCP 0.1 ya incluye un servidor local real basado en MCP stdio.
+        Puedes conectar un cliente compatible para consultar y editar un proyecto
+        exportado en JSON.
       </p>
       <div className="warning-note">
-        Estado Alpha 0.3: la interfaz Assistant AI y sus permisos visuales están
-        disponibles en el editor. El transporte MCP remoto todavía no está
-        conectado; esta página no simula una conexión activa.
+        MCP 0.1 funciona mediante un ciclo explícito: exporta el proyecto JSON,
+        abre ese archivo con la herramienta project.open del servidor MCP,
+        deja que el asistente lo edite y vuelve a importarlo en el editor.
+        Todavía no existe sincronización en vivo con IndexedDB ni un endpoint MCP alojado en Vercel.
       </div>
       <div className="docs-grid">
         <article className="docs-card">
-          <h2>Editor global</h2>
-          <p>
-            Assistant AI vive en el editor y podrá recibir instrucciones para
-            inspeccionar escenas, modificar objetos, editar scripts y ejecutar
-            vistas previas.
-          </p>
+          <h2>Herramientas de escena</h2>
+          <p><code>scene.list</code>, <code>scene.create_object</code>, <code>scene.update_object</code> y <code>scene.delete_object</code> permiten inspeccionar y modificar objetos y sus colores.</p>
         </article>
         <article className="docs-card">
-          <h2>External AI chats</h2>
-          <p>
-            Gemini, Claude, ChatGPT u otros clientes podrán conectarse cuando
-            exista un servidor MCP desplegado y cada cliente admita la conexión.
-          </p>
+          <h2>Herramientas de scripts</h2>
+          <p><code>scripts.list</code>, <code>scripts.read</code> y <code>scripts.write</code> permiten consultar y editar el código guardado en el proyecto.</p>
         </article>
         <article className="docs-card">
-          <h2>Permission gates</h2>
-          <p>
-            Lectura de escena, edición de escena, edición de código y ejecución
-            deben concederse por separado. Las herramientas de escritura pedirán
-            aprobación.
-          </p>
+          <h2>Proyecto</h2>
+          <p><code>project.open</code>, <code>project.inspect</code> y <code>project.save</code> abren, inspeccionan y guardan el archivo JSON local.</p>
         </article>
         <article className="docs-card">
-          <h2>Local-first projects</h2>
-          <p>
-            Los proyectos viven en IndexedDB del navegador. Un servidor remoto
-            no puede leerlos automáticamente: necesitaremos un puente local
-            seguro o sincronización elegida por el usuario.
-          </p>
+          <h2>Privacidad y control</h2>
+          <p>El servidor se ejecuta en tu equipo por stdio. Solo puede trabajar con el archivo que eliges abrir. Usa clientes MCP de confianza y revisa las acciones de escritura.</p>
         </article>
       </div>
-      <h2>Planned tool groups</h2>
-      <ul className="subtitle">
-        <li><code>scene.list</code> — list objects and transforms.</li>
-        <li><code>scene.create</code> / <code>scene.update</code> — create and edit approved objects.</li>
-        <li><code>files.list</code> / <code>files.write</code> — inspect and edit project files.</li>
-        <li><code>scripts.read</code> / <code>scripts.write</code> — work with scripts.</li>
-        <li><code>animation.preview</code> — start an approved preview.</li>
-      </ul>
-      <p className="muted" style={{ fontSize: 12 }}>
-        Security design: scoped tokens, per-tool permissions, explicit
-        confirmation for destructive changes, and no passwords or browser
-        cookies.
+      <h2>Instalación</h2>
+      <ol className="subtitle">
+        <li>Descarga o clona el repositorio e instala dependencias con <code>npm install</code>.</li>
+        <li>En NEXUS Engine, abre un proyecto y pulsa <strong>Export JSON</strong>.</li>
+        <li>Configura tu cliente MCP con <code>node</code> y la ruta absoluta a <code>mcp-server/index.mjs</code>.</li>
+        <li>Reinicia el cliente y llama <code>project.open</code> con la ruta absoluta del JSON exportado.</li>
+        <li>Cuando el asistente termine, importa el JSON modificado en el mismo proyecto.</li>
+      </ol>
+      <p className="muted" style={{fontSize:12,lineHeight:1.7}}>
+        Limitaciones 0.1: no ejecuta Python, C++, Lua ni NEXUS Script; no sincroniza cambios en vivo; los modelos binarios GLB/glTF/OBJ deben importarse por separado después de un intercambio JSON.
       </p>
+      <p><a className="docs-link" href="https://github.com/anyelo888ra-ux/NEXUS-Game-Engine/tree/main/mcp-server" target="_blank" rel="noreferrer">Ver servidor MCP y guía de configuración en GitHub ↗</a></p>
       <Link className="btn primary" href="/">Back to projects</Link>
     </main>
   );
