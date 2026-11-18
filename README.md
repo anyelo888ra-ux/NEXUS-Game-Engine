@@ -15,16 +15,16 @@ Repository: https://github.com/anyelo888ra-ux/NEXUS-Game-Engine
 - Basic Move and Jump animation preview loops.
 - Starter templates: empty scene, platformer and 3D showcase.
 - Custom 404 page, `/about:blank`, and documentation at `/doc`.
-- Assistant AI permission panel and MCP Hub planning page.
+- Per-object material color picker and Play/Stop scene playtest with basic WASD camera movement.\n- JSON project export/import for a controlled MCP editing round trip.\n- Local MCP 0.1 stdio server with scene and script tools.
 
 ## Important Alpha limitations
 - Script files are edited and saved as text; Python, C++, Lua and NEXUS Script runtimes/compilers are not integrated yet.
 - Animation tools are simple procedural preview loops, not a full keyframe timeline.
 - The project file panel currently stores and reorders entries; nested drag-and-drop folder moves are not implemented yet.
-- The MCP Hub documents the planned connection and the editor has an Assistant AI permissions UI, but a remote MCP transport/server is **not connected yet**. Do not treat the UI as a live MCP connection.
+- MCP 0.1 is a real local stdio server (`mcp-server/index.mjs`) that edits an exported project JSON file. It does not connect directly to browser IndexedDB or run as a hosted Vercel MCP endpoint; use the editor Export JSON / Import JSON round trip.
 - Projects and imported assets remain in the current browser's IndexedDB. There is no cloud backup or automatic access from external AI chats.
 
-## Blender workflow
+## MCP 0.1\nSee [`mcp-server/README.md`](mcp-server/README.md) for installation and MCP client configuration.\n\n## Blender workflow
 The native `.blend` format is not directly loaded by the browser. In Blender, use **File → Export → glTF 2.0**, preferably as **GLB**. GLB can package meshes, materials and textures in one file. glTF files may need external textures beside them; OBJ geometry is supported, but separate MTL materials are not implemented yet.
 
 ## Local-first storage
