@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
+import { randomUUID } from "node:crypto";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod";
@@ -55,7 +56,7 @@ server.tool("scene.create_object", "Create a primitive in the open scene. Suppor
   color: z.string().regex(/^#[0-9a-fA-F]{6}$/).optional()
 }, async ({ name, shape, color }) => {
   const p = requireProject();
-  const object = { id: crypto.randomUUID(), name, type: "mesh", shape, color: color ?? "#50d8e8", transform: { position: [0, 0.5, 0], rotation: [0, 0, 0], scale: [1, 1, 1] } };
+  const object = { id: randomUUID(), name, type: "mesh", shape, color: color ?? "#50d8e8", transform: { position: [0, 0.5, 0], rotation: [0, 0, 0], scale: [1, 1, 1] } };
   p.scene.objects.push(object);
   await save();
   return result({ created: object });
