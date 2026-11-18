@@ -1,2 +1,70 @@
 import Link from "next/link";
-export default function McpHub(){return <main className="docs-layout"><Link className="docs-link" href="/">← NEXUS Engine</Link><div className="eyebrow" style={{marginTop:28}}>NEXUS AI CONNECTIVITY</div><h1>MCP Hub</h1><p className="subtitle">Un punto central para conectar asistentes de IA con herramientas del editor. MCP permite que un cliente compatible descubra herramientas, pero requiere un servidor MCP real y una conexión autorizada.</p><div className="warning-note">Estado Alpha 0.3: la interfaz Assistant AI y sus permisos visuales están disponibles en el editor. El transporte MCP remoto todavía no está conectado; esta página no simula una conexión activa.</div><div className="docs-grid"><article className="docs-card"><h2>Editor global</h2><p>Assistant AI vive en el editor y podrá recibir instrucciones para inspeccionar escenas, modificar objetos, editar scripts y ejecutar vistas previas.</p></article><article className="docs-card"><h2>External AI chats</h2><p>Gemini, Claude, ChatGPT u otros clientes podrán conectarse cuando exista un servidor MCP desplegado y cada cliente admita la conexión.</p></article><article className="docs-card"><h2>Permission gates</h2><p>Lectura de escena, edición de escena, edición de código y ejecución deben concederse por separado. Las herramientas de escritura pedirán aprobación.</p></article><article className="docs-card"><h2>Local-first projects</h2><p>Los proyectos viven en IndexedDB del navegador. Un servidor remoto no puede leerlos automáticamente: necesitaremos un puente local seguro o sincronización elegida por el usuario.</p></article></div><h2>Planned tool groups</h2><ul className="subtitle"><li><code>scene.list</code> — list objects and transforms.</li><li><code>scene.create</code> / <code>scene.update</code> — create and edit approved objects.</li><li><code>files.list</code> / <code>files.write</code> — inspect and edit project files.</li><li><code>scripts.read</code> / <code>scripts.write</code> — work with scripts.</li><li><code>animation.preview</code> — start an approved preview.</li></ul><p className="muted" style={{fontSize:12}}>Security design: scoped tokens, per-tool permissions, explicit confirmation for destructive changes, and no passwords or browser cookies.</p><Link className="btn primary" href="/">Back to projects</Link></main>
+
+export default function McpHub() {
+  return (
+    <main className="docs-layout">
+      <Link className="docs-link" href="/">← NEXUS Engine</Link>
+      <div className="eyebrow" style={{ marginTop: 28 }}>
+        NEXUS AI CONNECTIVITY
+      </div>
+      <h1>MCP Hub</h1>
+      <p className="subtitle">
+        Un punto central para conectar asistentes de IA con herramientas del
+        editor. MCP permite que un cliente compatible descubra herramientas,
+        pero requiere un servidor MCP real y una conexión autorizada.
+      </p>
+      <div className="warning-note">
+        Estado Alpha 0.3: la interfaz Assistant AI y sus permisos visuales están
+        disponibles en el editor. El transporte MCP remoto todavía no está
+        conectado; esta página no simula una conexión activa.
+      </div>
+      <div className="docs-grid">
+        <article className="docs-card">
+          <h2>Editor global</h2>
+          <p>
+            Assistant AI vive en el editor y podrá recibir instrucciones para
+            inspeccionar escenas, modificar objetos, editar scripts y ejecutar
+            vistas previas.
+          </p>
+        </article>
+        <article className="docs-card">
+          <h2>External AI chats</h2>
+          <p>
+            Gemini, Claude, ChatGPT u otros clientes podrán conectarse cuando
+            exista un servidor MCP desplegado y cada cliente admita la conexión.
+          </p>
+        </article>
+        <article className="docs-card">
+          <h2>Permission gates</h2>
+          <p>
+            Lectura de escena, edición de escena, edición de código y ejecución
+            deben concederse por separado. Las herramientas de escritura pedirán
+            aprobación.
+          </p>
+        </article>
+        <article className="docs-card">
+          <h2>Local-first projects</h2>
+          <p>
+            Los proyectos viven en IndexedDB del navegador. Un servidor remoto
+            no puede leerlos automáticamente: necesitaremos un puente local
+            seguro o sincronización elegida por el usuario.
+          </p>
+        </article>
+      </div>
+      <h2>Planned tool groups</h2>
+      <ul className="subtitle">
+        <li><code>scene.list</code> — list objects and transforms.</li>
+        <li><code>scene.create</code> / <code>scene.update</code> — create and edit approved objects.</li>
+        <li><code>files.list</code> / <code>files.write</code> — inspect and edit project files.</li>
+        <li><code>scripts.read</code> / <code>scripts.write</code> — work with scripts.</li>
+        <li><code>animation.preview</code> — start an approved preview.</li>
+      </ul>
+      <p className="muted" style={{ fontSize: 12 }}>
+        Security design: scoped tokens, per-tool permissions, explicit
+        confirmation for destructive changes, and no passwords or browser
+        cookies.
+      </p>
+      <Link className="btn primary" href="/">Back to projects</Link>
+    </main>
+  );
+}
