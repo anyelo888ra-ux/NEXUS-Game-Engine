@@ -1,0 +1,10 @@
+// NEXUS Script 0.1 — platformer player
+when game.starts {
+  say "Crystal Run started!"
+  player.set_speed(6)
+}
+
+when player.jumps {
+  say "Jump!"
+  player.move(0, 0.1, 0)
+}
