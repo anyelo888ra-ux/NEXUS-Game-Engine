@@ -2,7 +2,7 @@ export type EngineShape = "cube" | "sphere" | "capsule" | "plane" | "cone" | "to
 export type EngineTransform = { position: [number, number, number]; rotation: [number, number, number]; scale: [number, number, number] };
 export type EngineObject = {
   id: string; name: string; type: "camera" | "light" | "mesh" | "sprite";
-  shape?: EngineShape; color?: string; transform?: EngineTransform; asset?: Blob; format?: "glb" | "gltf" | "obj";
+  shape?: EngineShape; color?: string; role?: "player"; transform?: EngineTransform; asset?: Blob; format?: "glb" | "gltf" | "obj";
 };
 export type EngineFile = { id: string; name: string; kind: "file" | "folder"; parentId: string | null; content?: string };
 export type EngineScript = { id: string; name: string; language: "python" | "cpp" | "lua" | "nexus"; content: string };
