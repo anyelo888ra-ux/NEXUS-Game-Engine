@@ -1,2 +1,40 @@
 import Link from "next/link";
-export default function CylinderNote(){return <main className="docs-layout"><Link className="docs-link" href="/doc">← All documentation</Link><div className="eyebrow" style={{marginTop:28}}>PRIMITIVE POLICY · ALPHA</div><h1>Cylinders: not used</h1><div className="warning-note">The standard NEXUS primitive palette intentionally does not include a standalone cylinder. This is a project design choice for the current Alpha, not a browser or Three.js limitation.</div><h2 style={{marginTop:28}}>Use a capsule instead</h2><p className="subtitle">When a rounded cylindrical shape is needed, choose <strong>Capsule</strong>. It has a central body with rounded ends and is already supported by the editor.</p><div className="docs-grid"><article className="docs-card"><h3>Allowed alternative</h3><code>CapsuleGeometry</code><p>Available from Scene → Add Object or the viewport right-click menu.</p></article><article className="docs-card"><h3>Other primitives</h3><p>Cube, Sphere, Plane, Cone, Torus and Circle remain available.</p></article></div><p className="muted" style={{fontSize:12}}>This note records the current NEXUS Engine design rule. It does not block importing an external model that happens to contain cylindrical geometry.</p></main>
+
+export default function CylinderNote() {
+  return (
+    <main className="docs-layout">
+      <Link className="docs-link" href="/doc">← All documentation</Link>
+      <div className="eyebrow" style={{ marginTop: 28 }}>
+        PRIMITIVE POLICY · ALPHA
+      </div>
+      <h1>Cylinders: not used</h1>
+      <div className="warning-note">
+        The standard NEXUS primitive palette intentionally does not include a
+        standalone cylinder. This is a project design choice for the current
+        Alpha, not a browser or Three.js limitation.
+      </div>
+      <h2 style={{ marginTop: 28 }}>Use a capsule instead</h2>
+      <p className="subtitle">
+        When a rounded cylindrical shape is needed, choose <strong>Capsule</strong>.
+        It has a central body with rounded ends and is already supported by the
+        editor.
+      </p>
+      <div className="docs-grid">
+        <article className="docs-card">
+          <h3>Allowed alternative</h3>
+          <code>CapsuleGeometry</code>
+          <p>Available from Scene → Add Object or the viewport right-click menu.</p>
+        </article>
+        <article className="docs-card">
+          <h3>Other primitives</h3>
+          <p>Cube, Sphere, Plane, Cone, Torus and Circle remain available.</p>
+        </article>
+      </div>
+      <p className="muted" style={{ fontSize: 12 }}>
+        This note records the current NEXUS Engine design rule. It does not
+        block importing an external model that happens to contain cylindrical
+        geometry.
+      </p>
+    </main>
+  );
+}
