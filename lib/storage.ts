@@ -32,7 +32,6 @@ export async function listProjects(): Promise<EngineProject[]> {
   const db = await openDatabase();
   return new Promise((resolve, reject) => {
     const request = db.transaction(STORE, "readonly").objectStore(STORE).getAll();
-    request.onsuccess = () => resolve((request.result as EngineProject[]).sort((a,b) => b.updatedAt-a.updatedAt));
     request.onerror = () => reject(request.error);
     request.onsuccess = () => { resolve((request.result as EngineProject[]).sort((a,b) => b.updatedAt-a.updatedAt)); db.close(); };
   });
