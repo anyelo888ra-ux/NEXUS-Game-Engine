@@ -47,12 +47,12 @@ export default function HomePage() {
   return <main className="shell">
     <header className="topbar">
       <div className="brand"><div className="logo">N</div><span>NEXUS <span style={{color:"var(--cyan)"}}>ENGINE</span></span></div>
-      <span className="pill">ALPHA 0.1.0</span>
+      <div style={{display:"flex",alignItems:"center",gap:12}}><span className="pill">ALPHA 0.2.0</span><Link className="btn" href="/credits">Credits ↗</Link></div>
     </header>
     <section className="hero">
       <div className="eyebrow">Browser-native creation environment</div>
       <h1>Build worlds.<br/><span style={{color:"var(--cyan)"}}>Create games.</span></h1>
-      <p className="subtitle">A lightweight 2D & 3D game engine experiment. Your projects are stored locally in this browser using IndexedDB — no account or cloud backup required.</p>
+      <p className="subtitle">A browser-based 2D & 3D game engine. Build interactive 3D scenes, import models and keep projects locally in this browser with IndexedDB.</p>
       <div className="actions">
         <input className="field" aria-label="Project name" value={name} onChange={e=>setName(e.target.value)} style={{maxWidth:260,margin:0}}/>
         <button className="btn primary" onClick={()=>void create()}>＋ Create project</button>
@@ -66,8 +66,8 @@ export default function HomePage() {
         <div className="actions" style={{margin:0}}><Link className="btn" href={`/editor/${p.id}`}>Open</Link><button className="btn" onClick={()=>void remove(p.id)}>Delete</button></div>
       </div>)}</div>}
     <div className="grid" style={{marginBottom:50}}>
-      <div className="card"><div className="eyebrow">01 / Runtime</div><h3>2D & 3D core</h3><p className="muted">Rendering and scene systems are under construction.</p></div>
-      <div className="card"><div className="eyebrow">02 / Storage</div><h3>Local-first</h3><p className="muted">Projects stay in your browser. Export and import tools are planned.</p></div>
+      <div className="card"><div className="eyebrow">01 / Runtime</div><h3>Three.js 3D viewport</h3><p className="muted">Real-time WebGL scene, orbit camera and GLB, glTF and OBJ model import.</p></div>
+      <div className="card"><div className="eyebrow">02 / Storage</div><h3>Local-first assets</h3><p className="muted">Projects and imported model files are saved in IndexedDB on this browser.</p></div>
       <div className="card"><div className="eyebrow">03 / AI Hub</div><h3>MCP integration</h3><p className="muted">A shared tool interface for AI coding assistants is planned.</p></div>
     </div>
   </main>;
