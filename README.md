@@ -1,6 +1,6 @@
 # NEXUS Game Engine
 
-**Alpha 0.3.0** — browser-based 2D/3D game engine experiment.
+**Alpha 0.4.0** — browser-based 2D/3D game engine experiment.
 
 Repository: https://github.com/anyelo888ra-ux/NEXUS-Game-Engine
 
@@ -18,7 +18,7 @@ Repository: https://github.com/anyelo888ra-ux/NEXUS-Game-Engine
 - Per-object material color picker and Play/Stop scene playtest with basic WASD camera movement.\n- JSON project export/import for a controlled MCP editing round trip.\n- Local MCP 0.1 stdio server with scene and script tools.
 
 ## Important Alpha limitations
-- Script files are edited and saved as text; Python, C++, Lua and NEXUS Script runtimes/compilers are not integrated yet.
+- Python, C++ and Lua remain source-text editors only; their runtimes/toolchains are not bundled. NEXUS Script 0.1 is the only integrated runtime.
 - Animation tools are simple procedural preview loops, not a full keyframe timeline.
 - The project file panel currently stores and reorders entries; nested drag-and-drop folder moves are not implemented yet.
 - MCP 0.1 is a real local stdio server (`mcp-server/index.mjs`) that edits an exported project JSON file. It does not connect directly to browser IndexedDB or run as a hosted Vercel MCP endpoint; use the editor Export JSON / Import JSON round trip.
